@@ -1,24 +1,60 @@
-/* Premium Bento Update CSS */
-
-body {
-    background-color: #f9f9f9;
-    font-family: 'Arial', sans-serif;
-}
-
-.header {
-    background-color: #4CAF50;
-    padding: 15px;
+.hero {
+    background: url('hero-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
     text-align: center;
-    color: white;
 }
 
-.footer {
-    background-color: #4CAF50;
-    padding: 10px;
-    text-align: center;
-    color: white;
+nav {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 1rem;
 }
 
-.container {
-    padding: 20px;
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.project-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.project-card:hover {
+    transform: scale(1.05);
+}
+
+.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        height: 70vh;
+    }
 }
