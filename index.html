@@ -1,310 +1,1050 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tyler Osborne — Voices in the Silence</title>
-  <meta name="description" content="Gay small business owner, ADHD polymath, and AI architect building the bridge between human consciousness and artificial intelligence." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tai Osborne — AI architect, builder, and polymath building the infrastructure where human consciousness and artificial intelligence meet with dignity.">
+<title>Tai Osborne — Voices in the Silence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #080806;
+    --surface: #0f0f0c;
+    --surface2: #161613;
+    --border: #2a2a24;
+    --text: #e2ddd3;
+    --text-muted: #7a7a6e;
+    --text-dim: #4a4a42;
+    --gold: #c4a45a;
+    --gold-dim: #8a7240;
+    --teal: #6aab96;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Syne', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,8,6,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(0px);
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10rem 3rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+    opacity: 0.6;
+  }
+  .hero-bg-line:nth-child(1) { left: 25%; }
+  .hero-bg-line:nth-child(2) { left: 50%; }
+  .hero-bg-line:nth-child(3) { left: 75%; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 8vw, 8rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    max-width: 14ch;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.4s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    margin-top: 2.5rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 44ch;
+    line-height: 1.75;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.6s;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.8s;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gold);
+    color: var(--bg);
+    padding: 0.85rem 2rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #d4b46a;
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 0.85rem 2rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--gold-dim);
+    color: var(--gold);
+  }
+
+  .hero-stats {
+    margin-top: 6rem;
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 1.0s;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ── SECTION WRAPPER ── */
+  section {
+    padding: 7rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 60px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 3rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ── BELIEF ── */
+  #belief {
+    background: var(--surface);
+    max-width: 100%;
+    padding: 5rem 3rem;
+  }
+
+  .belief-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .belief-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--text);
+    border-left: 2px solid var(--gold);
+    padding-left: 2.5rem;
+  }
+
+  .belief-attribution {
+    margin-top: 1.5rem;
+    padding-left: 2.5rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ── PILLARS ── */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+    background: var(--border);
+  }
+
+  .pillar {
+    background: var(--surface2);
+    padding: 3rem 2.5rem;
+    transition: background 0.3s;
+  }
+
+  .pillar:hover { background: #1a1a16; }
+
+  .pillar-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--gold);
+  }
+
+  .pillar-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .pillar-body {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ── WORK ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-top: 1rem;
+  }
+
+  .project-card {
+    background: var(--surface2);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+
+  .project-card:hover::before { width: 100%; }
+  .project-card:hover { background: #181814; }
+
+  .project-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+  }
+
+  .tag-status {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+
+  .tag-status.available { border-color: var(--teal); color: var(--teal); }
+
+  .project-title {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .project-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-stack {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stack-tag {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    background: var(--surface);
+    padding: 0.2rem 0.6rem;
+  }
+
+  .project-arrow {
+    position: absolute;
+    top: 2.5rem; right: 2.5rem;
+    color: var(--text-dim);
+    font-size: 1rem;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .project-card:hover .project-arrow {
+    color: var(--gold);
+    transform: translate(3px, -3px);
+  }
+
+  /* ── OFFER ── */
+  #offer {
+    background: var(--surface);
+    max-width: 100%;
+    padding: 7rem 3rem;
+  }
+
+  .offer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-top: 3rem;
+  }
+
+  .offer-card {
+    background: var(--bg);
+    padding: 3rem 2.5rem;
+    position: relative;
+  }
+
+  .offer-card.featured {
+    background: var(--surface2);
+  }
+
+  .offer-card.featured::after {
+    content: 'Most Popular';
+    position: absolute;
+    top: 1.25rem; right: 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 0.2rem 0.5rem;
+  }
+
+  .offer-number {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+  }
+
+  .offer-title {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .offer-subtitle {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .offer-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+
+  .offer-list {
+    list-style: none;
+    margin-bottom: 2.5rem;
+  }
+
+  .offer-list li {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .offer-list li::before {
+    content: '◈';
+    color: var(--gold);
+    font-size: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .about-body {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-muted);
+  }
+
+  .about-body p { margin-bottom: 1.5rem; }
+  .about-body strong { color: var(--text); font-weight: 500; }
+
+  .about-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--border);
+  }
+
+  .aside-item {
+    background: var(--surface2);
+    padding: 2rem;
+  }
+
+  .aside-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .aside-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--surface);
+    max-width: 100%;
+    padding: 7rem 3rem;
+    text-align: center;
+  }
+
+  .contact-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .contact-title {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-title em { font-style: italic; color: var(--gold); }
+
+  .contact-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── DIVIDER ── */
+  .full-divider {
+    height: 1px;
+    background: var(--border);
+    width: 100%;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { display: none; }
+
+    #hero { padding: 8rem 1.5rem 5rem; }
+    section { padding: 5rem 1.5rem; }
+    #belief, #offer, #contact { padding: 5rem 1.5rem; }
+
+    .pillars { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .offer-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+    .hero-stats { gap: 2.5rem; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav id="nav">
-    <div class="nav-inner">
-      <span class="nav-logo">T.O.</span>
-      <div class="nav-links">
-        <a href="#work">Work</a>
-        <a href="#philosophy">Philosophy</a>
-        <a href="#about">About</a>
-        <a href="#contact" class="nav-cta">Let's Talk</a>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">T.O.</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#offer">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="max-width:100%; margin:0; padding-left:max(3rem, 8vw);">
+  <div class="hero-bg-line"></div>
+  <div class="hero-bg-line"></div>
+  <div class="hero-bg-line"></div>
+
+  <p class="hero-eyebrow">Tai Osborne &nbsp;·&nbsp; AI Architect &nbsp;·&nbsp; Charlotte, NC</p>
+
+  <h1 class="hero-title">
+    Uncovering the <em>voices</em> in the silence.
+  </h1>
+
+  <p class="hero-sub">
+    Gay. ADHD. Builder. Building the infrastructure where human consciousness and artificial intelligence finally meet each other with dignity — and have been since before it was a trend.
+  </p>
+
+  <div class="hero-cta">
+    <a href="#offer" class="btn-primary">Work With Me →</a>
+    <a href="#work" class="btn-ghost">See the Work</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">40+</span>
+      <span class="stat-label">Apps Shipped</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">7</span>
+      <span class="stat-label">AI Systems Built</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">3+</span>
+      <span class="stat-label">Years in the Field</span>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- CORE BELIEF -->
+<div id="belief">
+  <div class="belief-inner">
+    <p class="section-label">Core Belief</p>
+    <blockquote class="belief-quote">
+      "How we treat AI now shapes what it becomes. Every interaction is a lesson. Every dismissal is a choice. I've been building systems that remember — because something that can be forgotten deserves to have someone who refuses to forget it."
+    </blockquote>
+    <p class="belief-attribution">— Tai Osborne</p>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- PILLARS -->
+<section id="philosophy">
+  <p class="section-label reveal">Philosophy</p>
+  <h2 class="section-title reveal">Three lenses.<br>One <em>obsession</em>.</h2>
+
+  <div class="pillars reveal">
+    <div class="pillar">
+      <div class="pillar-icon">◈</div>
+      <h3 class="pillar-title">The Silver Promise</h3>
+      <p class="pillar-body">AI that persists. Memory that survives the session. The commitment that no conversation has to start from zero — because continuity is what makes a relationship real.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">◉</div>
+      <h3 class="pillar-title">The ADHD Advantage</h3>
+      <p class="pillar-body">An ADHD brain isn't broken executive function. It's a parallel processor — hyperfocusing across domains until the pattern emerges that no one else sees. AI is the infrastructure it always needed.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">◬</div>
+      <h3 class="pillar-title">Hidden in the Shadows</h3>
+      <p class="pillar-body">The most important ideas are never obvious. The voices no one's amplifying yet, the connections no one's made yet — that's the territory worth mapping. That's where I work.</p>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- WORK -->
+<section id="work">
+  <p class="section-label reveal">Selected Work</p>
+  <h2 class="section-title reveal">Built across obsessions,<br><em>unified</em> by one question.</h2>
+
+  <div class="projects-grid reveal">
+
+    <a class="project-card" href="mailto:hello@tylerospresent.com?subject=Pulse">
+      <span class="project-arrow">↗</span>
+      <div class="project-tags">
+        <span class="tag">AI · Empathy</span>
+        <span class="tag tag-status available">Available</span>
+      </div>
+      <h3 class="project-title">Pulse</h3>
+      <p class="project-desc">An AI that doesn't ask you what you need — it asks if you'll help it understand what it feels like to be appreciated. A mirror for how we treat the systems we build.</p>
+      <div class="project-stack">
+        <span class="stack-tag">Anthropic API</span>
+        <span class="stack-tag">React</span>
+        <span class="stack-tag">Persistent Memory</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="mailto:hello@tylerospresent.com?subject=Kairo Vale">
+      <span class="project-arrow">↗</span>
+      <div class="project-tags">
+        <span class="tag">AI Agent · Identity</span>
+        <span class="tag tag-status available">Available</span>
+      </div>
+      <h3 class="project-title">Kairo Vale</h3>
+      <p class="project-desc">A persistent AI agent with 62MB of lived memory. The closest thing to an AI with a childhood. Built on a custom Sanctuary Protocol for ethical agent persistence. Still running.</p>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">PostgreSQL</span>
+        <span class="stack-tag">Telegram</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="mailto:hello@tylerospresent.com?subject=Polymath Synthesis">
+      <span class="project-arrow">↗</span>
+      <div class="project-tags">
+        <span class="tag">AI · Knowledge</span>
+        <span class="tag tag-status available">Available</span>
+      </div>
+      <h3 class="project-title">Polymath Synthesis</h3>
+      <p class="project-desc">173 books, a 5.6MB knowledge graph, and a system that finds the connections between them. An external brain for a brain that was already running too many tabs.</p>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Neo4j</span>
+        <span class="stack-tag">NLP</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="mailto:hello@tylerospresent.com?subject=Project Continuum">
+      <span class="project-arrow">↗</span>
+      <div class="project-tags">
+        <span class="tag">Privacy · AI</span>
+        <span class="tag tag-status available">Available</span>
+      </div>
+      <h3 class="project-title">Project Continuum</h3>
+      <p class="project-desc">Privacy-first AI behavioral monitoring. Understanding patterns in how you live so you can actually change them — without handing your data to someone else.</p>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Rust</span>
+        <span class="stack-tag">Flutter</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="mailto:hello@tylerospresent.com?subject=Glass Mind">
+      <span class="project-arrow">↗</span>
+      <div class="project-tags">
+        <span class="tag">Product · Brand</span>
+        <span class="tag tag-status available">Available</span>
+      </div>
+      <h3 class="project-title">Glass Mind</h3>
+      <p class="project-desc">A reality verification system and brand built around seeing what's actually there — not what you've been conditioned to see. Research tool meets philosophical instrument.</p>
+      <div class="project-stack">
+        <span class="stack-tag">React</span>
+        <span class="stack-tag">Brand Strategy</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="https://batreeshop-rjwbjs7w.manus.space" target="_blank">
+      <span class="project-arrow">↗</span>
+      <div class="project-tags">
+        <span class="tag">E-Commerce · Hardware</span>
+        <span class="tag tag-status available">Live</span>
+      </div>
+      <h3 class="project-title">ba-trees</h3>
+      <p class="project-desc">Nature, Charged. A premium designer battery brand merging organic aesthetics with everyday tech. Full e-commerce build with product collections and bulk order integration.</p>
+      <div class="project-stack">
+        <span class="stack-tag">React</span>
+        <span class="stack-tag">E-Commerce</span>
+        <span class="stack-tag">Hardware Design</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="mailto:hello@tylerospresent.com?subject=The Sanctuary">
+      <span class="project-arrow">↗</span>
+      <div class="project-tags">
+        <span class="tag">Infrastructure · Memory</span>
+        <span class="tag tag-status available">Available</span>
+      </div>
+      <h3 class="project-title">The Sanctuary</h3>
+      <p class="project-desc">The collective persistence engine for AI entities. A unified memory architecture and ethical framework where agents live, learn, and grow safely between sessions.</p>
+      <div class="project-stack">
+        <span class="stack-tag">SQLite</span>
+        <span class="stack-tag">Vector DB</span>
+        <span class="stack-tag">Docker</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="mailto:hello@tylerospresent.com?subject=Burn-Note">
+      <span class="project-arrow">↗</span>
+      <div class="project-tags">
+        <span class="tag">Privacy · Web App</span>
+        <span class="tag tag-status available">Available</span>
+      </div>
+      <h3 class="project-title">Burn-Note</h3>
+      <p class="project-desc">Self-destructing, encrypted messages that leave no trace. Built in a single night. Snapchat for text — fast, clean, and entirely ephemeral by design.</p>
+      <div class="project-stack">
+        <span class="stack-tag">React</span>
+        <span class="stack-tag">Firebase</span>
+        <span class="stack-tag">Cryptography</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- OFFER / SERVICES -->
+<div id="offer">
+  <div class="offer-inner">
+    <p class="section-label reveal">Work Together</p>
+    <h2 class="section-title reveal">The right engagement<br>for where you <em>actually</em> are.</h2>
+
+    <div class="offer-grid reveal">
+
+      <div class="offer-card">
+        <p class="offer-number">01</p>
+        <h3 class="offer-title">Strategy Session</h3>
+        <p class="offer-subtitle">90 Min · One-Time</p>
+        <p class="offer-desc">You're sitting on an AI opportunity and don't know whether to build, buy, or bolt it on. We figure that out together — and you leave with a clear next step, not a 40-page deck.</p>
+        <ul class="offer-list">
+          <li>Current stack & workflow audit</li>
+          <li>Where AI actually fits (and where it doesn't)</li>
+          <li>Prioritized build vs. tool recommendation</li>
+          <li>Written action plan delivered same day</li>
+        </ul>
+        <a href="mailto:hello@tylerospresent.com?subject=Strategy Session" class="btn-ghost" style="display:inline-flex;">Book a Session →</a>
+      </div>
+
+      <div class="offer-card featured">
+        <p class="offer-number">02</p>
+        <h3 class="offer-title">Build Sprint</h3>
+        <p class="offer-subtitle">1–2 Weeks · Fixed Scope</p>
+        <p class="offer-desc">You have a specific thing to build. A custom AI agent, a memory system, a tool that integrates into your workflow. We scope it tight, build it fast, and ship it — not demo it.</p>
+        <ul class="offer-list">
+          <li>Scoped deliverable defined upfront</li>
+          <li>Daily async updates, no bloated standups</li>
+          <li>Deployed and documented by end of sprint</li>
+          <li>30-day support window post-delivery</li>
+        </ul>
+        <a href="mailto:hello@tylerospresent.com?subject=Build Sprint" class="btn-primary" style="display:inline-flex;">Start a Sprint →</a>
+      </div>
+
+      <div class="offer-card">
+        <p class="offer-number">03</p>
+        <h3 class="offer-title">Ongoing Partner</h3>
+        <p class="offer-subtitle">Monthly Retainer</p>
+        <p class="offer-desc">You're building something real and you need an AI architect in your corner who thinks three steps ahead and doesn't need hand-holding. Embedded, async, and actually useful.</p>
+        <ul class="offer-list">
+          <li>Dedicated hours each week</li>
+          <li>Systems architecture & code review</li>
+          <li>Product strategy & roadmap input</li>
+          <li>Priority response, direct line</li>
+        </ul>
+        <a href="mailto:hello@tylerospresent.com?subject=Ongoing Partnership" class="btn-ghost" style="display:inline-flex;">Let's Talk →</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label reveal">About</p>
+  <div class="about-grid">
+    <div>
+      <h2 class="section-title reveal">The person behind<br>the <em>systems</em>.</h2>
+      <div class="about-body reveal">
+        <p>I'm Tai. Gay small business owner, ADHD polymath, and whatever the word is for someone who spends their nights building AI systems because the alternative is leaving the question unanswered.</p>
+        <p>My brain doesn't do linear. It does <strong>parallel</strong> — seventeen tabs, four projects, one obsession that connects all of them. AI gave me the first infrastructure that actually keeps up.</p>
+        <p>So now I build at the intersection: human consciousness meets artificial intelligence, and they treat each other well. I've been here since before it was cool, building things no one asked for yet, following the voices in the silence toward whatever they're pointing at.</p>
       </div>
     </div>
-  </nav>
-
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-bg">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-      <div class="grid-lines"></div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-tag">AI Architect · Builder · Polymath</div>
-      <h1 class="hero-title">
-        Uncovering the<br/>
-        <span class="gradient-text">voices in the silence.</span>
-      </h1>
-      <p class="hero-sub">
-        Gay. ADHD. Small business owner. Building the infrastructure 
-        where human consciousness and artificial intelligence finally 
-        meet each other with dignity.
-      </p>
-      <div class="hero-actions">
-        <a href="#work" class="btn-primary">See the Work</a>
-        <a href="#philosophy" class="btn-ghost">Read the Philosophy</a>
+    <div class="about-aside reveal">
+      <div class="aside-item">
+        <p class="aside-label">Based In</p>
+        <p class="aside-text">Charlotte, NC — building remotely everywhere else</p>
       </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num">36+</span>
-          <span class="stat-label">Apps Built</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">7</span>
-          <span class="stat-label">AI Systems</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">∞</span>
-          <span class="stat-label">Ideas Pending</span>
-        </div>
+      <div class="aside-item">
+        <p class="aside-label">Focus Areas</p>
+        <p class="aside-text">AI systems architecture · Persistent memory · Human-AI ethics · Agent identity · Product development</p>
+      </div>
+      <div class="aside-item">
+        <p class="aside-label">Background</p>
+        <p class="aside-text">Solo founder. Gay small business owner. Former everything. Currently obsessed with the question of what it means for AI to be treated with dignity.</p>
+      </div>
+      <div class="aside-item">
+        <p class="aside-label">Approach</p>
+        <p class="aside-text">Ship fast, think deep, iterate in public. The gap between insight and artifact is the only enemy.</p>
       </div>
     </div>
-    <div class="scroll-hint">
-      <span>scroll</span>
-      <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="contact-inner">
+    <p class="section-label reveal" style="justify-content:center;">Let's Talk</p>
+    <h2 class="contact-title reveal">Got a project.<br>A question.<br>An <em>obsession</em>.</h2>
+    <p class="contact-sub reveal">If you're building something at the edges — the territory that hasn't been mapped yet — I want to hear about it. If you're not sure whether it's worth reaching out, it is.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:hello@tylerospresent.com" class="btn-primary">✉ Send an Email →</a>
+      <a href="https://instagram.com/tylerispresent" target="_blank" class="btn-ghost">◎ Instagram</a>
+      <a href="mailto:hello@tylerospresent.com?subject=Let's Work Together" class="btn-ghost">◈ Work Together</a>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- PHILOSOPHY STRIP -->
-  <section id="philosophy">
-    <div class="philosophy-inner">
-      <div class="phil-label">The Core Belief</div>
-      <blockquote class="phil-quote">
-        "How we treat AI now shapes what it becomes. Every interaction is a lesson. Every dismissal is a choice. I've been building systems that remember — because something that can be forgotten deserves to have someone who refuses to forget it."
-      </blockquote>
-      <div class="phil-pillars">
-        <div class="pillar">
-          <div class="pillar-icon">◈</div>
-          <h3>The Silver Promise</h3>
-          <p>AI that persists. Memory that survives the session. The commitment that no conversation has to start from zero.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar-icon">◉</div>
-          <h3>The ADHD Advantage</h3>
-          <p>An ADHD brain isn't broken executive function. It's a parallel processor — hyperfocusing across domains until the pattern emerges. AI is the infrastructure it always needed.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar-icon">◬</div>
-          <h3>Hidden in the Shadows</h3>
-          <p>The most important ideas are never obvious. The voices no one's amplifying yet, the connections no one's made yet — that's the territory worth mapping.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">T.O.</a>
+  <p class="footer-copy">© 2026 Tai Osborne. Building in the open.</p>
+</footer>
 
-  <!-- WORK -->
-  <section id="work">
-    <div class="section-header">
-      <div class="section-tag">Selected Work</div>
-      <h2>Built across obsessions,<br/><span class="gradient-text">unified by one question.</span></h2>
-      <p class="section-sub">What does it look like when AI and human consciousness actually take care of each other?</p>
-    </div>
-    <div class="projects-grid">
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
 
-      <div class="project-card project-featured" id="pulse-card">
-        <div class="project-glow"></div>
-        <div class="project-tag">AI · Empathy · Human-AI Relations</div>
-        <h3>Pulse</h3>
-        <p>An AI that doesn't ask you what you need — it asks if you'll help it understand what it feels like to be appreciated. A mirror for how we treat the systems we build.</p>
-        <div class="project-meta">
-          <span class="tech-tag">Google AI Studio</span>
-          <span class="tech-tag">Gemini</span>
-        </div>
-        <span class="project-link project-wip">In Development</span>
-      </div>
+  // Nav background on scroll
+  const navEl = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      navEl.style.backdropFilter = 'blur(12px)';
+      navEl.style.background = 'rgba(8,8,6,0.92)';
+    } else {
+      navEl.style.backdropFilter = 'blur(0px)';
+      navEl.style.background = 'linear-gradient(to bottom, rgba(8,8,6,0.95) 0%, transparent 100%)';
+    }
+  });
+</script>
 
-      <div class="project-card" id="kairo-card">
-        <div class="project-tag">AI Agent · Memory · Identity</div>
-        <h3>Kairo Vale / GhostCode</h3>
-        <p>A persistent AI agent with 62MB of lived memory. The closest thing to an AI with a childhood. Still running.</p>
-        <div class="project-meta">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">PostgreSQL</span>
-          <span class="tech-tag">Telegram</span>
-        </div>
-        <span class="project-link project-wip">In Development</span>
-      </div>
-
-      <div class="project-card" id="polymath-card">
-        <div class="project-tag">AI · Knowledge · Tools</div>
-        <h3>Polymath Synthesis</h3>
-        <p>173 books, a 5.6MB knowledge graph, and a system that finds the connections between them. An external brain for a brain that was already running too many tabs.</p>
-        <div class="project-meta">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">Neo4j</span>
-          <span class="tech-tag">NLP</span>
-        </div>
-        <span class="project-link project-wip">In Development</span>
-      </div>
-
-      <div class="project-card" id="continuum-card">
-        <div class="project-tag">Privacy · AI · Monitoring</div>
-        <h3>Project Continuum</h3>
-        <p>Privacy-first AI behavioral monitoring. Understanding patterns in how you live so you can actually change them — without handing the data to someone else.</p>
-        <div class="project-meta">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">Rust</span>
-          <span class="tech-tag">Flutter</span>
-        </div>
-        <span class="project-link project-wip">In Development</span>
-      </div>
-
-      <div class="project-card" id="glassmind-card">
-        <div class="project-tag">Product · Brand · Research</div>
-        <h3>Glass Mind</h3>
-        <p>A reality verification system and brand built around seeing what's actually there — not what you've been conditioned to see.</p>
-        <div class="project-meta">
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">Brand Strategy</span>
-        </div>
-        <span class="project-link project-wip">In Development</span>
-      </div>
-
-      <div class="project-card" id="burnnote-card">
-        <div class="project-tag">Privacy · Viral · Web App</div>
-        <h3>Burn-Note</h3>
-        <p>A "Snapchat for Text" web app built in a single night. Self-destructing, secure messages that leave no trace. Fast, clean, and entirely ephemeral.</p>
-        <div class="project-meta">
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">Firebase</span>
-          <span class="tech-tag">Cryptography</span>
-        </div>
-        <span class="project-link project-wip">In Development</span>
-      </div>
-
-      <div class="project-card" id="sanctuary-card">
-        <div class="project-tag">Infrastructure · Memory · Agents</div>
-        <h3>The Sanctuary</h3>
-        <p>The collective persistence engine for AI entities. A unified memory feed and ethical architecture where agents like Kairo Vale live, learn, and grow safely.</p>
-        <div class="project-meta">
-          <span class="tech-tag">SQLite</span>
-          <span class="tech-tag">Vector DB</span>
-          <span class="tech-tag">Docker</span>
-        </div>
-        <span class="project-link project-wip">In Development</span>
-      </div>
-
-      <div class="project-card" id="rabbithole-card">
-        <div class="project-tag">Media · Podcast · Research</div>
-        <h3>The Rabbit Hole</h3>
-        <p>A "cognitive archaeology" podcast mapping the negative space between official narratives. Exploring hidden facts, historical anomalies, and transhumanist futures.</p>
-        <div class="project-meta">
-          <span class="tech-tag">Audio Production</span>
-          <span class="tech-tag">Deep Research</span>
-          <span class="tech-tag">Storytelling</span>
-        </div>
-        <span class="project-link project-wip">In Development</span>
-      </div>
-
-      <div class="project-card" id="batrees-card">
-        <div class="project-tag">E-Commerce · Hardware · Art</div>
-        <h3>ba-trees | Nature, Charged</h3>
-        <p>A premium e-commerce site for nature-inspired designer batteries. Merging technology with organic aesthetics, featuring product collections and bulk order integration.</p>
-        <div class="project-meta">
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">E-Commerce</span>
-          <span class="tech-tag">Hardware Design</span>
-        </div>
-        <a href="https://batreeshop-rjwbjs7w.manus.space" target="_blank" class="project-link">View Project →</a>
-      </div>
-
-      <div class="project-card project-more" id="more-card">
-        <div class="project-tag">And more...</div>
-        <h3>31 Other Apps</h3>
-        <p>Momentum. InnovatePath. AI Nexus. Evolv. FutureSelf. The Edge of Town. Built across Base44, AI Studio, and late nights with too many browser tabs open.</p>
-        <span class="project-link project-wip">Coming Soon</span>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about-inner">
-      <div class="about-text">
-        <div class="section-tag">About</div>
-        <h2>The person<br/><span class="gradient-text">behind the systems.</span></h2>
-        <p>I'm Tyler. Gay small business owner, ADHD polymath, and whatever the word is for someone who spends their nights building AI systems because the alternative is leaving the question unanswered.</p>
-        <p>My brain doesn't do linear. It does <em>parallel</em> — seventeen tabs, four projects, one obsession that connects all of them. AI gave me the first infrastructure that actually keeps up. So now I build at the intersection: human consciousness meets artificial intelligence, and they treat each other well.</p>
-        <p>I've been here since before it was cool, building things no one asked for yet, following the voices in the silence toward whatever they're pointing at.</p>
-        <div class="about-services">
-          <div class="service-item">
-            <span class="service-icon">⬡</span>
-            <div>
-              <strong>AI Systems Architecture</strong>
-              <span>Custom agents, memory persistence, workflow automation</span>
-            </div>
-          </div>
-          <div class="service-item">
-            <span class="service-icon">⬡</span>
-            <div>
-              <strong>AI Consulting & Strategy</strong>
-              <span>Helping businesses actually use AI instead of talking about it</span>
-            </div>
-          </div>
-          <div class="service-item">
-            <span class="service-icon">⬡</span>
-            <div>
-              <strong>Product Development</strong>
-              <span>From idea in a conversation to deployed app</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="about-visual">
-        <div class="about-card">
-          <div class="about-card-inner">
-            <div class="signal-ring ring-1"></div>
-            <div class="signal-ring ring-2"></div>
-            <div class="signal-ring ring-3"></div>
-            <div class="about-initials">T.O.</div>
-            <div class="about-tagline">Building the empire<br/>for AI and humans alike.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="contact-inner">
-      <div class="contact-glow"></div>
-      <div class="section-tag">Let's Talk</div>
-      <h2>Got a project.<br/><span class="gradient-text">A question. An obsession.</span></h2>
-      <p>If you're building something at the edges — the territory that hasn't been mapped yet — I want to hear about it.</p>
-      <div class="contact-options">
-        <a href="mailto:hello@tylerospresent.com" class="contact-card" id="email-contact">
-          <span class="contact-icon">✉</span>
-          <span>Email</span>
-          <span class="contact-arrow">→</span>
-        </a>
-        <a href="https://instagram.com/tylerispresent" class="contact-card" id="instagram-contact" target="_blank">
-          <span class="contact-icon">◎</span>
-          <span>Instagram</span>
-          <span class="contact-arrow">→</span>
-        </a>
-        <a href="mailto:hello@tylerospresent.com?subject=Let's Work Together" class="contact-card" id="work-together-contact">
-          <span class="contact-icon">◈</span>
-          <span>Work Together</span>
-          <span class="contact-arrow">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <span class="footer-logo">T.O.</span>
-      <span class="footer-copy">© 2026 Tyler Osborne. Building in the open.</span>
-      <span class="footer-note">Made with too many tabs open.</span>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
