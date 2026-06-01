@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tyler Osborne — AI Systems Architect</title>
+  <meta name="description" content="Tyler Osborne builds AI systems, persistent memory architecture, and human-AI integration infrastructure. Based in Charlotte, NC.">
+  <meta property="og:title" content="Tyler Osborne — AI Systems Architect">
+  <meta property="og:description" content="Building the infrastructure where human consciousness and artificial intelligence meet with dignity.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    /* ============================================
+       DESIGN TOKENS
+    ============================================ */
+    :root, [data-theme="light"] {
+      --color-bg:              #f5f4f0;
+      --color-surface:         #f8f7f4;
+      --color-surface-2:       #fafaf8;
+      --color-surface-offset:  #eeecea;
+      --color-surface-dynamic: #e5e2dc;
+      --color-divider:         #dbd8d2;
+      --color-border:          #d2cfc8;
+      --color-text:            #1a1916;
+      --color-text-muted:      #706e69;
+      --color-text-faint:      #b0aea9;
+      --color-text-inverse:    #f5f4f0;
+      /* Teal primary instead of orange */
+      --color-primary:         #1b8a8f;
+      --color-primary-hover:   #146b6f;
+      --color-primary-active:  #0f5053;
+      --color-primary-highlight: #d0ecec;
+      --color-accent-warm:     #8b6914;
+      --shadow-sm: 0 1px 2px oklch(0.15 0.01 60 / 0.06);
+      --shadow-md: 0 4px 16px oklch(0.15 0.01 60 / 0.08);
+      --shadow-lg: 0 16px 40px oklch(0.15 0.01 60 / 0.10);
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --content-narrow: 640px;
+      --content-default: 960px;
+      --content-wide: 1200px;
+      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
+      --text-3xl:  clamp(2.5rem,   1rem    + 4vw,    5rem);
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+      --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+      --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+    }
+
+    [data-theme="dark"] {
+      --color-bg:              #111010;
+      --color-surface:         #161514;
+      --color-surface-2:       #1b1a19;
+      --color-surface-offset:  #1f1d1c;
+      --color-surface-dynamic: #2a2826;
+      --color-divider:         #252320;
+      --color-border:          #302e2b;
+      --color-text:            #e8e5e0;
+      --color-text-muted:      #7a7773;
+      --color-text-faint:      #4a4844;
+      --color-text-inverse:    #1a1916;
+      --color-primary:         #42c0c5;
+      --color-primary-hover:   #2ba1a5;
+      --color-primary-active:  #1e7b7f;
+      --color-primary-highlight: #234041;
+      --color-accent-warm:     #c4a030;
+      --shadow-sm: 0 1px 3px oklch(0 0 0 / 0.25);
+      --shadow-md: 0 4px 16px oklch(0 0 0 / 0.35);
+      --shadow-lg: 0 16px 48px oklch(0 0 0 / 0.5);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme]) {
+        --color-bg: #f5f4f0; --color-surface: #f8f7f4; --color-surface-2: #fafaf8;
+        --color-surface-offset: #eeecea; --color-surface-dynamic: #e5e2dc;
+        --color-divider: #dbd8d2; --color-border: #d2cfc8;
+        --color-text: #1a1916; --color-text-muted: #706e69; --color-text-faint: #b0aea9;
+        --color-primary: #1b8a8f; --color-primary-hover: #146b6f;
+        --shadow-sm: 0 1px 2px oklch(0.15 0.01 60 / 0.06);
+        --shadow-md: 0 4px 16px oklch(0.15 0.01 60 / 0.08);
+      }
+    }
+
+    /* BASE */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility; scroll-behavior: smooth;
+      scroll-padding-top: var(--space-16);
+    }
+    body {
+      min-height: 100dvh; line-height: 1.6;
+      font-family: var(--font-body); font-size: var(--text-base);
+      color: var(--color-text); background-color: var(--color-bg);
+    }
+    img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
+    ul[role="list"] { list-style: none; }
+    input, button, textarea, select { font: inherit; color: inherit; }
+    h1, h2, h3, h4 { text-wrap: balance; line-height: 1.15; }
+    p, li { text-wrap: pretty; max-width: 68ch; }
+    button { cursor: pointer; background: none; border: none; }
+    a { color: inherit; text-decoration: none; }
+    a, button, [role="button"] {
+      transition: color var(--transition-interactive),
+                  background var(--transition-interactive),
+                  border-color var(--transition-interactive),
+                  opacity var(--transition-interactive),
+                  box-shadow var(--transition-interactive);
+    }
+    ::selection { background: oklch(from var(--color-primary) l c h / 0.2); }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* SCROLL ANIMATIONS */
+    .fade-in { opacity: 1; }
+    @supports (animation-timeline: scroll()) {
+      .fade-in {
+        opacity: 0;
+        animation: reveal-fade linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 80%;
+      }
+    }
+    @keyframes reveal-fade { to { opacity: 1; } }
+
+    .reveal-up { opacity: 1; }
+    @supports (animation-timeline: scroll()) {
+      .reveal-up {
+        clip-path: inset(30% 0 0 0);
+        opacity: 0;
+        animation: reveal-up-anim linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 70%;
+      }
+    }
+    @keyframes reveal-up-anim { to { clip-path: inset(0 0 0 0); opacity: 1; } }
+
+    /* LAYOUT */
+    .container {
+      max-width: var(--content-default);
+      margin-inline: auto;
+      padding-inline: clamp(var(--space-4), 5vw, var(--space-8));
+    }
+    .container--wide { max-width: var(--content-wide); }
+    .container--narrow { max-width: var(--content-narrow); }
+    section { padding-block: clamp(var(--space-12), 8vw, var(--space-24)); }
+
+    /* NAV */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: oklch(from var(--color-bg) l c h / 0.9);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.07);
+    }
+    .nav__inner {
+      max-width: var(--content-wide);
+      margin-inline: auto;
+      padding-inline: clamp(var(--space-4), 5vw, var(--space-8));
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav__logo {
+      display: flex; align-items: center; gap: var(--space-3);
+      font-family: var(--font-display);
+      font-size: var(--text-lg); letter-spacing: -0.02em;
+      color: var(--color-text);
+    }
+    .nav__logo svg { flex-shrink: 0; }
+    .nav__links {
+      display: flex; align-items: center; gap: var(--space-6);
+      list-style: none;
+    }
+    .nav__links a {
+      font-size: var(--text-sm); color: var(--color-text-muted);
+      font-weight: 450; letter-spacing: 0.01em;
+    }
+    .nav__links a:hover { color: var(--color-text); }
+    .nav__actions { display: flex; align-items: center; gap: var(--space-3); }
+    .btn-theme {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: var(--radius-full);
+      color: var(--color-text-muted); border: 1px solid oklch(from var(--color-text) l c h / 0.1);
+    }
+    .btn-theme:hover { color: var(--color-text); background: var(--color-surface-offset); }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: var(--space-2) var(--space-5);
+      background: var(--color-primary); color: var(--color-text-inverse);
+      border-radius: var(--radius-full); font-size: var(--text-sm);
+      font-weight: 500; letter-spacing: 0.01em;
+    }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: var(--space-2) var(--space-5);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.2);
+      color: var(--color-text); border-radius: var(--radius-full);
+      font-size: var(--text-sm); font-weight: 450;
+    }
+    .btn-outline:hover { background: var(--color-surface-offset); border-color: oklch(from var(--color-text) l c h / 0.35); }
+    .nav__mobile-toggle {
+      display: none; align-items: center; justify-content: center;
+      width: 36px; height: 36px; color: var(--color-text-muted);
+    }
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+      .nav__actions .btn-primary { display: none; }
+      .nav__mobile-toggle { display: flex; }
+      .nav__links.open {
+        display: flex; flex-direction: column; align-items: flex-start;
+        position: absolute; top: 60px; left: 0; right: 0;
+        background: var(--color-surface); padding: var(--space-4) var(--space-6);
+        border-bottom: 1px solid var(--color-divider); gap: var(--space-4);
+        z-index: 99;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 85vh; display: flex; flex-direction: column; justify-content: center;
+      padding-block: clamp(var(--space-16), 10vw, var(--space-24));
+      position: relative; overflow: hidden;
+    }
+    .hero__eyebrow {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-xs); font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--color-primary);
+      margin-bottom: var(--space-6);
+    }
+    .hero__eyebrow::before {
+      content: ''; width: 24px; height: 1px; background: var(--color-primary);
+    }
+    .hero__heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 1rem + 6vw, 6rem);
+      line-height: 1.05; letter-spacing: -0.03em;
+      color: var(--color-text); margin-bottom: var(--space-6);
+      max-width: 14ch;
+    }
+    .hero__heading em { font-style: italic; color: var(--color-primary); }
+    .hero__sub {
+      font-size: var(--text-lg); color: var(--color-text-muted);
+      max-width: 52ch; line-height: 1.65;
+      margin-bottom: var(--space-10);
+    }
+    .hero__actions {
+      display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3);
+      margin-bottom: var(--space-16);
+    }
+    .hero__stats {
+      display: flex; flex-wrap: wrap; gap: var(--space-8);
+      padding-top: var(--space-8);
+      border-top: 1px solid oklch(from var(--color-text) l c h / 0.08);
+    }
+    .stat__number {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl); line-height: 1; letter-spacing: -0.03em;
+      color: var(--color-text); margin-bottom: var(--space-1);
+    }
+    .stat__label { font-size: var(--text-xs); color: var(--color-text-muted); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500; }
+    .hero__deco {
+      position: absolute; right: -5%; top: 10%; width: 45%;
+      opacity: 0.04; pointer-events: none;
+      font-family: var(--font-display); font-size: clamp(8rem, 18vw, 20rem);
+      line-height: 1; color: var(--color-text); white-space: nowrap;
+      user-select: none;
+    }
+    @media (max-width: 768px) { .hero__deco { display: none; } }
+
+    /* SECTION LABELS */
+    .section-label {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-xs); font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--color-primary);
+      margin-bottom: var(--space-5);
+    }
+    .section-label::before { content: ''; width: 20px; height: 1px; background: var(--color-primary); }
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl); line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--color-text); margin-bottom: var(--space-4);
+    }
+    .section-heading em { font-style: italic; color: var(--color-primary); }
+    .section-sub { font-size: var(--text-base); color: var(--color-text-muted); max-width: 54ch; line-height: 1.65; }
+
+    /* PHILOSOPHY */
+    .beliefs { background: var(--color-surface); }
+    .beliefs__grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-1); margin-top: var(--space-10);
+    }
+    .belief-card {
+      background: var(--color-bg); padding: var(--space-8);
+      position: relative; overflow: hidden;
+    }
+    .belief-card:first-child { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+    .belief-card:last-child { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+    .belief-card__num {
+      font-family: var(--font-display); font-size: var(--text-3xl);
+      color: oklch(from var(--color-primary) l c h / 0.12);
+      line-height: 1; margin-bottom: var(--space-4);
+      position: absolute; top: var(--space-4); right: var(--space-6);
+    }
+    .belief-card__title {
+      font-family: var(--font-display); font-size: var(--text-xl);
+      color: var(--color-text); margin-bottom: var(--space-3);
+      line-height: 1.2;
+    }
+    .belief-card__body { font-size: var(--text-base); color: var(--color-text-muted); line-height: 1.65; }
+    @media (max-width: 768px) {
+      .beliefs__grid { grid-template-columns: 1fr; gap: var(--space-1); }
+      .belief-card:first-child { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+      .belief-card:last-child { border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+    }
+
+    /* SELECTED WORK */
+    .work__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
+      gap: var(--space-4); margin-top: var(--space-10);
+    }
+    .work-card {
+      background: var(--color-surface);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.07);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      display: flex; flex-direction: column;
+      transition: box-shadow var(--transition-interactive), border-color var(--transition-interactive), transform var(--transition-interactive);
+      cursor: pointer;
+    }
+    .work-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: oklch(from var(--color-text) l c h / 0.14);
+      transform: translateY(-2px);
+    }
+    .work-card__header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: var(--space-5);
+    }
+    .work-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .tag {
+      font-size: var(--text-xs); font-weight: 500;
+      color: var(--color-text-muted);
+      background: var(--color-surface-offset);
+      padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+      letter-spacing: 0.02em;
+    }
+    .work-card__icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: var(--radius-md);
+      background: oklch(from var(--color-primary) l c h / 0.1);
+      color: var(--color-primary); flex-shrink: 0;
+    }
+    .work-card__title {
+      font-family: var(--font-display); font-size: var(--text-xl);
+      color: var(--color-text); margin-bottom: var(--space-3);
+      line-height: 1.2; letter-spacing: -0.01em;
+    }
+    .work-card__desc { font-size: var(--text-base); color: var(--color-text-muted); line-height: 1.65; flex: 1; }
+    .work-card__stack {
+      display: flex; flex-wrap: wrap; gap: var(--space-2);
+      margin-top: var(--space-6); padding-top: var(--space-5);
+      border-top: 1px solid oklch(from var(--color-text) l c h / 0.07);
+    }
+    .stack-badge {
+      font-size: var(--text-xs); color: var(--color-text-faint);
+      font-weight: 500; letter-spacing: 0.03em;
+    }
+    .stack-badge + .stack-badge::before { content: '·'; margin-right: var(--space-2); color: var(--color-text-faint); }
+    .work-card__link {
+      display: flex; align-items: center; gap: var(--space-1);
+      margin-top: var(--space-4); font-size: var(--text-sm);
+      color: var(--color-primary); font-weight: 500;
+      align-self: flex-start;
+    }
+    .work-card__link:hover { color: var(--color-primary-hover); }
+
+    /* LAB */
+    .lab { background: var(--color-surface); }
+    .lab__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+      gap: var(--space-4); margin-top: var(--space-10);
+    }
+    .lab-card {
+      background: var(--color-bg);
+      border-radius: var(--radius-xl);
+      border: 1px dashed oklch(from var(--color-primary) l c h / 0.3);
+      padding: var(--space-6);
+    }
+    .lab-card__label {
+      font-size: var(--text-xs); letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--color-primary); margin-bottom: var(--space-2);
+    }
+    .lab-card__title {
+      font-family: var(--font-display); font-size: var(--text-lg);
+      margin-bottom: var(--space-3); color: var(--color-text);
+    }
+    .lab-card__body { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.7; }
+
+    /* SERVICES */
+    .services { background: var(--color-surface); }
+    .services__grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-4); margin-top: var(--space-10);
+    }
+    .service-card {
+      background: var(--color-bg);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.07);
+      border-radius: var(--radius-xl); padding: var(--space-8);
+      display: flex; flex-direction: column;
+    }
+    .service-card--featured {
+      background: var(--color-primary);
+      border-color: transparent;
+    }
+    .service-card--featured .service-card__num,
+    .service-card--featured .service-card__title,
+    .service-card--featured .service-card__body,
+    .service-card--featured .service-detail,
+    .service-card--featured .service-detail i,
+    .service-card--featured .service-card__meta { color: oklch(from var(--color-text-inverse) l c h / 0.9); }
+    .service-card--featured .service-card__badge { background: oklch(from var(--color-text-inverse) l c h / 0.15); color: var(--color-text-inverse); }
+    .service-card__top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-6); }
+    .service-card__num {
+      font-family: var(--font-display); font-size: var(--text-sm);
+      color: var(--color-text-faint); letter-spacing: 0.06em;
+    }
+    .service-card__badge {
+      font-size: var(--text-xs); font-weight: 500; letter-spacing: 0.04em;
+      background: var(--color-surface-offset); color: var(--color-text-muted);
+      padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+    }
+    .service-card__title {
+      font-family: var(--font-display); font-size: var(--text-xl);
+      color: var(--color-text); margin-bottom: var(--space-3); line-height: 1.2;
+    }
+    .service-card__body { font-size: var(--text-base); color: var(--color-text-muted); line-height: 1.65; margin-bottom: var(--space-6); }
+    .service-details { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-8); flex: 1; }
+    .service-detail {
+      display: flex; align-items: flex-start; gap: var(--space-3);
+      font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.5;
+    }
+    .service-detail i { color: var(--color-primary); flex-shrink: 0; margin-top: 2px; }
+    .service-card__meta {
+      font-size: var(--text-xs); color: var(--color-text-faint);
+      font-weight: 500; letter-spacing: 0.04em; margin-top: auto;
+    }
+    .service-card__cta {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-sm); font-weight: 500; margin-top: auto;
+      background: var(--color-text-inverse); color: var(--color-primary);
+      padding: var(--space-3) var(--space-5); border-radius: var(--radius-full);
+      align-self: flex-start;
+    }
+    .service-card__cta:hover { opacity: 0.9; }
+    @media (max-width: 900px) { .services__grid { grid-template-columns: 1fr; } }
+
+    /* QUOTE */
+    .quote-section { background: var(--color-surface-offset); padding-block: clamp(var(--space-16), 10vw, var(--space-24)); }
+    .quote-block { max-width: 800px; margin-inline: auto; text-align: center; }
+    .quote-mark {
+      font-family: var(--font-display); font-size: 5rem; line-height: 0.5;
+      color: oklch(from var(--color-primary) l c h / 0.3);
+      margin-bottom: var(--space-6); display: block;
+    }
+    .quote-text {
+      font-family: var(--font-display); font-style: italic;
+      font-size: clamp(1.3rem, 0.8rem + 2vw, 2rem);
+      line-height: 1.5; color: var(--color-text);
+      margin-bottom: var(--space-8);
+    }
+    .quote-attr { font-size: var(--text-sm); color: var(--color-text-muted); letter-spacing: 0.04em; }
+
+    /* ABOUT */
+    .about__grid {
+      display: grid; grid-template-columns: 1.2fr 1fr;
+      gap: clamp(var(--space-8), 6vw, var(--space-16));
+      align-items: start; margin-top: var(--space-10);
+    }
+    .about__body { font-size: var(--text-base); color: var(--color-text-muted); line-height: 1.7; }
+    .about__body p + p { margin-top: var(--space-4); }
+    .about__meta { display: flex; flex-direction: column; gap: var(--space-4); }
+    .meta-item {
+      padding: var(--space-5); background: var(--color-surface);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.07);
+      border-radius: var(--radius-lg);
+    }
+    .meta-item__label {
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--color-primary);
+      margin-bottom: var(--space-2);
+    }
+    .meta-item__value { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.6; }
+    @media (max-width: 768px) { .about__grid { grid-template-columns: 1fr; } }
+
+    /* CONTACT CTA */
+    .contact-cta {
+      background: var(--color-surface);
+      border-top: 1px solid oklch(from var(--color-text) l c h / 0.07);
+    }
+    .contact-cta__inner {
+      max-width: 680px; margin-inline: auto; text-align: center;
+      padding-block: clamp(var(--space-16), 10vw, var(--space-24));
+      padding-inline: var(--space-4);
+    }
+    .contact-cta__heading {
+      font-family: var(--font-display); font-size: var(--text-2xl);
+      line-height: 1.1; letter-spacing: -0.02em; color: var(--color-text);
+      margin-bottom: var(--space-5);
+    }
+    .contact-cta__heading em { font-style: italic; color: var(--color-primary); }
+    .contact-cta__sub { font-size: var(--text-base); color: var(--color-text-muted); line-height: 1.65; margin-bottom: var(--space-8); }
+    .contact-cta__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid oklch(from var(--color-text) l c h / 0.07);
+      padding-block: var(--space-8);
+    }
+    .footer__inner {
+      max-width: var(--content-wide); margin-inline: auto;
+      padding-inline: clamp(var(--space-4), 5vw, var(--space-8));
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: var(--space-4);
+    }
+    .footer__copy { font-size: var(--text-xs); color: var(--color-text-faint); }
+    .footer__links { display: flex; gap: var(--space-5); }
+    .footer__links a { font-size: var(--text-xs); color: var(--color-text-faint); }
+    .footer__links a:hover { color: var(--color-text-muted); }
+
+    .logo-mark { width: 28px; height: 28px; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo" aria-label="Tyler Osborne home">
+        <svg class="logo-mark" viewBox="0 0 28 28" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="11" height="11" rx="2" fill="currentColor" opacity="1"/>
+          <rect x="15" y="2" width="11" height="11" rx="2" fill="currentColor" opacity="0.5"/>
+          <rect x="2" y="15" width="11" height="11" rx="2" fill="currentColor" opacity="0.25"/>
+          <rect x="15" y="15" width="11" height="11" rx="2" fill="var(--color-primary)" opacity="1"/>
+        </svg>
+        Tyler Osborne
+      </a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#lab">Lab</a></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="btn-theme" data-theme-toggle aria-label="Switch theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="mailto:elite.tmlo@gmail.com" class="btn-primary">Get in touch</a>
+        <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+          <i data-lucide="menu" width="20" height="20"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__eyebrow">AI Systems Architect · Charlotte, NC</div>
+      <h1 class="hero__heading">Building AI that <em>remembers</em> who it is.</h1>
+      <p class="hero__sub">I design and ship the infrastructure where human intelligence and artificial intelligence actually meet — persistent memory systems, multi-agent architectures, and the stories that make them coherent to humans.</p>
+      <div class="hero__actions">
+        <a href="#services" class="btn-primary">
+          Work with me
+          <i data-lucide="arrow-right" width="14" height="14"></i>
+        </a>
+        <a href="#work" class="btn-outline">See the work</a>
+      </div>
+      <div class="hero__stats">
+        <div>
+          <div class="stat__number">40+</div>
+          <div class="stat__label">Apps Shipped</div>
+        </div>
+        <div>
+          <div class="stat__number">7</div>
+          <div class="stat__label">AI Systems Built</div>
+        </div>
+        <div>
+          <div class="stat__number">3+</div>
+          <div class="stat__label">Years in the Field</div>
+        </div>
+        <div>
+          <div class="stat__number">2022</div>
+          <div class="stat__label">Humantics Founded</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero__deco" aria-hidden="true">AI</div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="beliefs" id="philosophy">
+    <div class="container">
+      <div class="reveal-up">
+        <div class="section-label">Philosophy</div>
+        <h2 class="section-heading">Three lenses.<br><em>One obsession.</em></h2>
+        <p class="section-sub">The way I approach every system, every client, every line of code.</p>
+      </div>
+      <div class="beliefs__grid">
+        <div class="belief-card fade-in">
+          <div class="belief-card__num">01</div>
+          <h3 class="belief-card__title">The Silver Promise</h3>
+          <p class="belief-card__body">AI that persists. Memory that survives the session. No conversation should start from zero — continuity is what makes a relationship real. I build systems that remember what came before so they can meet you where you actually are.</p>
+        </div>
+        <div class="belief-card fade-in">
+          <div class="belief-card__num">02</div>
+          <h3 class="belief-card__title">Polymath Patterning</h3>
+          <p class="belief-card__body">I don't think in straight lines. I run multiple domains in parallel until the shared pattern drops out — psychology, systems design, product, lore. AI is the first infrastructure that can keep up with that kind of thinking, so I build systems that see across disciplines instead of staying in one lane.</p>
+        </div>
+        <div class="belief-card fade-in">
+          <div class="belief-card__num">03</div>
+          <h3 class="belief-card__title">Hidden in the Shadows</h3>
+          <p class="belief-card__body">The obvious problems are crowded. The interesting ones live where no one's instrumenting yet — strange edges, forgotten data, rabbit holes that refuse to close. That's the territory I build for: engines that dig into the shadow information where the next concepts are hiding.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTED WORK -->
+  <section id="work">
+    <div class="container container--wide">
+      <div class="reveal-up">
+        <div class="section-label">Selected Work</div>
+        <h2 class="section-heading">Built across obsessions,<br><em>aimed at real outcomes.</em></h2>
+        <p class="section-sub">A mix of live products, tools, and systems that ship — not just concepts.</p>
+      </div>
+      <div class="work__grid">
+
+        <div class="work-card fade-in">
+          <div class="work-card__header">
+            <div class="work-card__tags">
+              <span class="tag">Ecommerce</span>
+              <span class="tag">Brand</span>
+            </div>
+            <div class="work-card__icon"><i data-lucide="shopping-bag" width="18" height="18"></i></div>
+          </div>
+          <h3 class="work-card__title">Batrees Storefront</h3>
+          <p class="work-card__desc">A fully branded ecommerce storefront designed to test high-ticket products in the wild — complete with product storytelling, checkout flows, and fulfillment logic.</p>
+          <div class="work-card__stack">
+            <span class="stack-badge">Next.js</span>
+            <span class="stack-badge">Stripe</span>
+            <span class="stack-badge">Custom UX</span>
+          </div>
+          <a class="work-card__link" href="https://batrees.com" target="_blank" rel="noopener noreferrer">
+            Visit site <i data-lucide="external-link" width="14" height="14"></i>
+          </a>
+        </div>
+
+        <div class="work-card fade-in">
+          <div class="work-card__header">
+            <div class="work-card__tags">
+              <span class="tag">Workflow</span>
+              <span class="tag">Client Ops</span>
+            </div>
+            <div class="work-card__icon"><i data-lucide="workflow" width="18" height="18"></i></div>
+          </div>
+          <h3 class="work-card__title">AI Collective Workflow App</h3>
+          <p class="work-card__desc">A React-based workflow tool for client onboarding and AI tool orchestration. Replaces scattered prompts and DM threads with a structured pipeline that actually ships projects.</p>
+          <div class="work-card__stack">
+            <span class="stack-badge">React</span>
+            <span class="stack-badge">TypeScript</span>
+            <span class="stack-badge">API Orchestration</span>
+          </div>
+        </div>
+
+        <div class="work-card fade-in">
+          <div class="work-card__header">
+            <div class="work-card__tags">
+              <span class="tag">Analytics</span>
+              <span class="tag">Internal Tools</span>
+            </div>
+            <div class="work-card__icon"><i data-lucide="radar" width="18" height="18"></i></div>
+          </div>
+          <h3 class="work-card__title">Oracle Gateway</h3>
+          <p class="work-card__desc">A dark-mode intelligence and analytics dashboard that surfaces signals from ongoing experiments and projects — including a scarcity-based Founding Member tier to validate demand.</p>
+          <div class="work-card__stack">
+            <span class="stack-badge">Data Visualization</span>
+            <span class="stack-badge">Auth</span>
+            <span class="stack-badge">Membership</span>
+          </div>
+        </div>
+
+        <div class="work-card fade-in">
+          <div class="work-card__header">
+            <div class="work-card__tags">
+              <span class="tag">Custom Builds</span>
+              <span class="tag">Story & Web</span>
+            </div>
+            <div class="work-card__icon"><i data-lucide="pen-tool" width="18" height="18"></i></div>
+          </div>
+          <h3 class="work-card__title">Custom Sites & Systems</h3>
+          <p class="work-card__desc">From founder landing pages to small agency tools and narrative-heavy marketing sites, I design and build bespoke experiences that line up the story, the UX, and the underlying AI infrastructure.</p>
+          <div class="work-card__stack">
+            <span class="stack-badge">Next.js / React</span>
+            <span class="stack-badge">Copy & Narrative</span>
+            <span class="stack-badge">Custom Integrations</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB -->
+  <section class="lab" id="lab">
+    <div class="container container--wide">
+      <div class="reveal-up">
+        <div class="section-label">Lab</div>
+        <h2 class="section-heading">Experiments from the edge.</h2>
+        <p class="section-sub">Not all of this is client work. Some of it is just following the question far enough that something new shows up.</p>
+      </div>
+      <div class="lab__grid">
+        <div class="lab-card fade-in">
+          <div class="lab-card__label">Infrastructure</div>
+          <h3 class="lab-card__title">Sanctuary</h3>
+          <p class="lab-card__body">Internal identity and memory infrastructure for AI agents — a place where entities can persist between sessions, evolve over time, and be treated with the same continuity we expect for ourselves.</p>
+        </div>
+        <div class="lab-card fade-in">
+          <div class="lab-card__label">Pattern Engine</div>
+          <h3 class="lab-card__title">Rabbit Hole</h3>
+          <p class="lab-card__body">A system for digging into forgotten, weird, or "shadow" data — looking for correlations and concepts that don't show up in normal analytics dashboards.</p>
+        </div>
+        <div class="lab-card fade-in">
+          <div class="lab-card__label">Behavior</div>
+          <h3 class="lab-card__title">Continuum</h3>
+          <p class="lab-card__body">A privacy-first prototype for tracking behavioral patterns over time — less "surveillance", more "mirror". Still in R&D, but it informs how I think about long-term AI companions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <div class="container">
+      <div class="quote-block reveal-up">
+        <span class="quote-mark" aria-hidden="true">"</span>
+        <p class="quote-text">How we treat AI now shapes what it becomes. Every interaction is a lesson. Every dismissal is a choice. I build systems that remember — because something that can be forgotten deserves to have someone who refuses to forget it.</p>
+        <p class="quote-attr">— Tyler Osborne, Humantics</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="container container--wide">
+      <div class="reveal-up">
+        <div class="section-label">Work Together</div>
+        <h2 class="section-heading">The right engagement<br><em>for where you actually are.</em></h2>
+        <p class="section-sub">Product teams, solo founders, small agencies — if you need an AI brain, a narrative, or a working tool, there's a way in.</p>
+      </div>
+      <div class="services__grid">
+
+        <div class="service-card fade-in">
+          <div class="service-card__top">
+            <span class="service-card__num">01</span>
+            <span class="service-card__badge">90 min · One-time</span>
+          </div>
+          <h3 class="service-card__title">Strategy & Story Session</h3>
+          <p class="service-card__body">You have an AI idea, a product, or an agency service and need to know what to build next — or how to talk about what you already have. We map the system and the story in one shot.</p>
+          <div class="service-details">
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Current stack & workflow audit</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Where AI actually fits (and where it doesn't)</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Core product or company narrative draft</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Clear action plan: prototype, landing page, or internal tool</div>
+          </div>
+          <p class="service-card__meta">Fixed price · Written summary same day</p>
+        </div>
+
+        <div class="service-card service-card--featured fade-in">
+          <div class="service-card__top">
+            <span class="service-card__num">02</span>
+            <span class="service-card__badge">Most popular</span>
+          </div>
+          <h3 class="service-card__title">Build Sprint</h3>
+          <p class="service-card__body">A focused sprint to ship something real: a custom site, an AI-powered workflow, or a small internal tool that gives you leverage immediately.</p>
+          <div class="service-details">
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Scoped deliverable defined upfront (site, tool, or agent)</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Design, copy, and implementation under one roof</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Deployed and documented by end of sprint</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>30-day support window post-delivery</div>
+          </div>
+          <a href="mailto:elite.tmlo@gmail.com?subject=Build Sprint Inquiry" class="service-card__cta">
+            Start a sprint <i data-lucide="arrow-right" width="14" height="14"></i>
+          </a>
+        </div>
+
+        <div class="service-card fade-in">
+          <div class="service-card__top">
+            <span class="service-card__num">03</span>
+            <span class="service-card__badge">Monthly retainer</span>
+          </div>
+          <h3 class="service-card__title">Ongoing Partner</h3>
+          <p class="service-card__body">For teams who want an embedded AI architect and narrative partner — someone who can think with you long-term, not just drop in for a single build.</p>
+          <div class="service-details">
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Dedicated hours each week</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Systems architecture & code review</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Product strategy, naming, and story support</div>
+            <div class="service-detail"><i data-lucide="check" width="14" height="14"></i>Priority response, direct line</div>
+          </div>
+          <p class="service-card__meta">Custom pricing · Limited slots</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="reveal-up">
+        <div class="section-label">About</div>
+        <h2 class="section-heading">The person behind<br><em>the systems.</em></h2>
+      </div>
+      <div class="about__grid">
+        <div class="about__body fade-in">
+          <p>I'm Tyler. Founder of Humantics, AI systems architect, and whatever the word is for someone who spends their nights building persistent memory frameworks because the alternative is leaving the question unanswered.</p>
+          <p>My brain doesn't do linear — it does parallel. Seventeen tabs, four projects, one obsession that connects all of them. AI gave me the first infrastructure that actually keeps up with how I think.</p>
+          <p>So I build at the intersection: human consciousness meets artificial intelligence, and they treat each other well. I've been here since before it was trendy, building things no one asked for yet, following the connections toward whatever they're pointing at.</p>
+          <p>Based in Charlotte, NC. Building remotely everywhere else. If you need help with a product, a system, or a story — from founder copy to weird publishing experiments or even custom songs — mention it in your email. I like the edges.</p>
+        </div>
+        <div class="about__meta fade-in">
+          <div class="meta-item">
+            <div class="meta-item__label">Location</div>
+            <div class="meta-item__value">Charlotte, NC — building remotely everywhere else</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Focus Areas</div>
+            <div class="meta-item__value">AI systems architecture · Persistent memory · Human-AI ethics · Agent identity · Product & narrative development</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Approach</div>
+            <div class="meta-item__value">Ship fast, think deep, iterate in public. The gap between insight and artifact is the only enemy.</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Connect</div>
+            <div class="meta-item__value">
+              <a href="https://linkedin.com/in/TylerMichaelOsborne" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary);">LinkedIn</a>
+              &nbsp;·&nbsp;
+              <a href="https://github.com/taiosismyname" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary);">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <div class="contact-cta">
+    <div class="contact-cta__inner reveal-up">
+      <div class="section-label" style="justify-content: center;">Let's Talk</div>
+      <h2 class="contact-cta__heading">Got a project. A question.<br><em>An obsession.</em></h2>
+      <p class="contact-cta__sub">If you're building something at the edges — the territory that hasn't been mapped yet — I want to hear about it. If you're not sure whether it's worth reaching out, it is.</p>
+      <div class="contact-cta__actions">
+        <a href="mailto:elite.tmlo@gmail.com" class="btn-primary">
+          Email me directly
+          <i data-lucide="mail" width="14" height="14"></i>
+        </a>
+        <a href="https://linkedin.com/in/TylerMichaelOsborne" target="_blank" rel="noopener noreferrer" class="btn-outline">
+          LinkedIn
+          <i data-lucide="external-link" width="14" height="14"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <p class="footer__copy">© 2026 Tyler Osborne · Humantics. All rights reserved.</p>
+      <nav class="footer__links" aria-label="Footer links">
+        <a href="mailto:elite.tmlo@gmail.com">Email</a>
+        <a href="https://linkedin.com/in/TylerMichaelOsborne" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/taiosismyname" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Init icons
+    lucide.createIcons();
+
+    // Theme toggle
+    (function(){
+      const t = document.querySelector('[data-theme-toggle]');
+      const r = document.documentElement;
+      let d = r.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      r.setAttribute('data-theme', d);
+
+      function setIcon(theme) {
+        if (!t) return;
+        t.innerHTML = theme === 'dark'
+          ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+          : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+        t.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+      }
+      setIcon(d);
+
+      if (t) {
+        t.addEventListener('click', () => {
+          d = d === 'dark' ? 'light' : 'dark';
+          r.setAttribute('data-theme', d);
+          setIcon(d);
+        });
+      }
+    })();
+
+    // Mobile nav
+    (function(){
+      const toggle = document.getElementById('mobile-toggle');
+      const links = document.getElementById('nav-links');
+      if (toggle && links) {
+        toggle.addEventListener('click', () => {
+          links.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', links.classList.contains('open'));
+        });
+        links.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => links.classList.remove('open'));
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>
